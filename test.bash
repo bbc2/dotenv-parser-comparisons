@@ -69,6 +69,7 @@ main() {
     case_dotenv 'Escaped and double-quoted `n`' '"a\nb"'
     case_dotenv 'Quoted newline' '"a
 b"'
+    case_dotenv 'Non-escaped space' 'a b'
     case_dotenv 'Non-escaped `#`' 'a#b'
     case_dotenv 'Non-escaped spaced `#`' 'a #b'
     case_dotenv 'Escaped `#`' '"a#b"'
