@@ -52,6 +52,7 @@ EOF
     local python_command='env PIPENV_DONT_LOAD_ENV=1 pipenv run -- python run.py'
     case_parser "$dotenv" 'cases/python-dotenv-0.9.1' "$python_command"
     case_parser "$dotenv" 'cases/python-dotenv-0.10.1' "$python_command"
+    case_parser "$dotenv" 'cases/python-dotenv-0.12.0' "$python_command"
     case_parser "$dotenv" 'cases/bash-5.0.0' 'bash run.bash'
     case_parser "$dotenv" 'cases/js-dotenv-6.2.0' 'node run.js'
     case_parser "$dotenv" 'cases/ruby-dotenv-2.6.0' 'bundle exec -- ruby run.rb'
