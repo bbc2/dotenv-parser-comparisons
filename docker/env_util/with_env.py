@@ -9,6 +9,6 @@ if __name__ == "__main__":
         exit(1)
 
     with open(".env", "wb") as dotenv_file:
-        dotenv_file.write(b"foo=" + input_)
+        dotenv_file.write(input_)
 
     subprocess.check_call(sys.argv[1:])

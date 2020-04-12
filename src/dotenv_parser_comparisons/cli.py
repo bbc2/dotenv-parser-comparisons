@@ -63,7 +63,7 @@ def run_case(case: Case) -> Output:
 
 def show_bytes_in_pre(bytes_: bytes) -> str:
     string = bytes_.decode("utf-8").replace("\n", "<br>")
-    return f"<pre>foo={string}</pre>"
+    return f"<pre>{string}</pre>"
 
 
 def show_char_code(char: str) -> str:
@@ -109,20 +109,20 @@ def render_results(
 
 def main():
     inputs = [
-        Input(name="Basic", value=b"ab"),
-        Input(name="Escaped `z`", value=b"a\\zb"),
-        Input(name="Escaped and single-quoted `z`", value=b"'a\\zb'"),
-        Input(name="Escaped and double-quoted `z`", value=b'"a\\zb"'),
-        Input(name="Escaped `n`", value=b"a\\nb"),
-        Input(name="Escaped and single-quoted `n`", value=b"'a\\nb'"),
-        Input(name="Escaped and doubel-quoted `n`", value=b'"a\\nb"'),
-        Input(name="Quoted newline", value=b'"a\nb"'),
-        Input(name="Non-escaped space", value=b"a b"),
-        Input(name="Non-escaped `#`", value=b"a#b"),
-        Input(name="Non-escaped spaced `#`", value=b"a #b"),
-        Input(name="Escaped spaced `#`", value=b'"a#b"'),
-        Input(name="UTF-8", value="é".encode("utf-8")),
-        Input(name="Quoted UTF-8", value='"é"'.encode("utf-8")),
+        Input(name="Basic", value=b"foo=ab"),
+        Input(name="Escaped `z`", value=b"foo=a\\zb"),
+        Input(name="Escaped and single-quoted `z`", value=b"foo='a\\zb'"),
+        Input(name="Escaped and double-quoted `z`", value=b'foo="a\\zb"'),
+        Input(name="Escaped `n`", value=b"foo=a\\nb"),
+        Input(name="Escaped and single-quoted `n`", value=b"foo='a\\nb'"),
+        Input(name="Escaped and doubel-quoted `n`", value=b'foo="a\\nb"'),
+        Input(name="Quoted newline", value=b'foo="a\nb"'),
+        Input(name="Non-escaped space", value=b"foo=a b"),
+        Input(name="Non-escaped `#`", value=b"foo=a#b"),
+        Input(name="Non-escaped spaced `#`", value=b"foo=a #b"),
+        Input(name="Escaped spaced `#`", value=b'foo="a#b"'),
+        Input(name="UTF-8", value="foo=é".encode("utf-8")),
+        Input(name="Quoted UTF-8", value='foo="é"'.encode("utf-8")),
     ]
     parsers = [
         Parser(name="bash-5.0.0"),
