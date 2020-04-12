@@ -1,5 +1,7 @@
+import os
 import subprocess
 from collections import defaultdict
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
 from typing import Dict, Optional, Sequence
 
@@ -167,8 +169,12 @@ def main():
     ]
 
     results = []
-    for case in progressbar.progressbar(cases):
-        results.append(Result(case=case, output=run_case(case)))
+    cpu_count = len(os.sched_getaffinity(0))
+
+    with ProcessPoolExecutor(max_workers=max(cpu_count, 16)) as executor:
+        execution = zip(cases, executor.map(run_case, cases))
+        for (case, output) in progressbar.progressbar(execution, max_value=len(cases)):
+            results.append(Result(case=case, output=output))
 
     print(render_results(inputs=inputs, parsers=parsers, results=results))
 
