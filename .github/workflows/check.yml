@@ -1,0 +1,18 @@
+name: Check
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+      - run: pip install poetry
+      - run: poetry install
+      - run: poetry run make check
+      - run: poetry run dotenv-parser-comparisons > result.md
+      - uses: actions/upload-artifact@v1
+        with:
+          name: result
+          path: result.md

@@ -1,0 +1,36 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+      - run: pip install poetry
+      - run: poetry install
+      - run: poetry run make check
+      - run: poetry run dotenv-parser-comparisons > result.md
+      - uses: actions/upload-artifact@v1
+        with:
+          name: result
+          path: result.md
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+      - uses: actions/download-artifact@v1
+        with:
+          name: result
+      - run: mv result/result.md readme.md
+      - run: git config --global user.email ""
+      - run: git config --global user.name "GitHub Actions"
+      - run: git commit --all --message "Update pages"
+      - run: git push
