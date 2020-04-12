@@ -138,6 +138,17 @@ def main():
         Input(name="Escaped spaced `#`", value=b'foo="a#b"'),
         Input(name="UTF-8", value="foo=é".encode("utf-8")),
         Input(name="Quoted UTF-8", value='foo="é"'.encode("utf-8")),
+        Input(name="Variable", value=b"a=b\nfoo=x$a\n"),
+        Input(name="Variable undefined", value=b"foo=x$a\n"),
+        Input(name="Variable followed by dot", value=b"a=b\nfoo=x$a.y\n"),
+        Input(name="Variable followed by hyphen", value=b"a=b\nfoo=x$a-y\n"),
+        Input(name="Variable followed by underscore", value=b"a=b\na_y=c\nfoo=x$a_y\n"),
+        Input(name="Variable with braces", value=b"a=b\nfoo=x${a}y\n"),
+        Input(name="Variable with braces undefined", value=b"foo=x${a}y\n"),
+        Input(
+            name="Variable with unused default expansion", value=b"a=b\nfoo=x${a:-c}\n"
+        ),
+        Input(name="Variable with default expansion", value=b"foo=x${a:-c}\n"),
     ]
     parsers = [
         Parser(name="bash-5.0.0"),
