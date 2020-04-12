@@ -1,7 +1,7 @@
 import subprocess
 from collections import defaultdict
 from dataclasses import dataclass
-from typing import Dict, Sequence
+from typing import Dict, Optional, Sequence
 
 import progressbar
 
@@ -25,7 +25,8 @@ class Case:
 
 @dataclass(frozen=True)
 class Output:
-    value: bytes
+    value: Optional[bytes]
+    error: Optional[bytes]
 
 
 @dataclass(frozen=True)
@@ -54,11 +55,19 @@ def tag(parser: Parser) -> str:
 
 
 def run_case(case: Case) -> Output:
-    value = subprocess.check_output(
+    result = subprocess.run(
         ["docker", "run", "--rm", "--env", "INPUT", tag(case.parser)],
+        capture_output=True,
+        check=False,
         env={"INPUT": case.input_.value.decode("utf-8")},
     )
-    return Output(value=value)
+
+    if result.returncode < 0:
+        raise Exception("Docker command interrupted by signal")
+    elif result.returncode == 0:
+        return Output(value=result.stdout, error=None)
+    else:
+        return Output(value=None, error=result.stderr)
 
 
 def show_bytes_in_pre(bytes_: bytes) -> str:
@@ -76,6 +85,14 @@ def show_char_code(char: str) -> str:
 
 def split_bytes(bytes_: bytes) -> str:
     return "&nbsp;".join(f"`{show_char_code(byte)}`" for byte in bytes_.decode())
+
+
+def render_output(output: Output) -> str:
+    if output.error is not None:
+        return show_bytes_in_pre(output.error)
+
+    assert output.value is not None
+    return split_bytes(output.value)
 
 
 def render_results(
@@ -97,9 +114,7 @@ def render_results(
     out += f"| source file | {input_line} |\n"
 
     for parser in parsers:
-        outputs = " | ".join(
-            split_bytes(values[parser][input_].value) for input_ in inputs
-        )
+        outputs = " | ".join(render_output(values[parser][input_]) for input_ in inputs)
         unbreakable_hyphen = "&#8209;"
         unbreakable_name = parser.name.replace("-", unbreakable_hyphen)
         out += f"| {unbreakable_name} | {outputs} |\n"

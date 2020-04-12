@@ -11,4 +11,5 @@ if __name__ == "__main__":
     with open(".env", "wb") as dotenv_file:
         dotenv_file.write(input_)
 
-    subprocess.check_call(sys.argv[1:])
+    result = subprocess.run(sys.argv[1:], check=False)
+    sys.exit(result.returncode)
