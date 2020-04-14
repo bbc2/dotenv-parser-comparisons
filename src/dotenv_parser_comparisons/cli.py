@@ -147,11 +147,15 @@ def main():
         Input(name="UTF-8", value="foo=é".encode("utf-8")),
         Input(name="Quoted UTF-8", value='foo="é"'.encode("utf-8")),
         Input(name="Variable", value=b"a=b\nfoo=x$a\n"),
+        Input(name="Single-quoted variable", value=b"a=b\nfoo='x$a'\n"),
+        Input(name="Double-quoted variable", value=b'a=b\nfoo="x$a"\n'),
+        Input(name="Variable with braces", value=b"a=b\nfoo=x${a}y\n"),
+        Input(name="Single-quoted variable with braces", value=b"a=b\nfoo='x${a}y'\n"),
+        Input(name="Double-quoted variable with braces", value=b'a=b\nfoo="x${a}y"\n'),
         Input(name="Variable undefined", value=b"foo=x$a\n"),
         Input(name="Variable followed by dot", value=b"a=b\nfoo=x$a.y\n"),
         Input(name="Variable followed by hyphen", value=b"a=b\nfoo=x$a-y\n"),
         Input(name="Variable followed by underscore", value=b"a=b\na_y=c\nfoo=x$a_y\n"),
-        Input(name="Variable with braces", value=b"a=b\nfoo=x${a}y\n"),
         Input(name="Variable with braces undefined", value=b"foo=x${a}y\n"),
         Input(
             name="Variable with unused default expansion", value=b"a=b\nfoo=x${a:-c}\n"
